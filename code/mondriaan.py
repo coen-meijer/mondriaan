@@ -106,14 +106,14 @@ class PofP:
         return self.canvas.get_at(column_vector[0, 0], column_vector[1, 0])
 
     def check_rectangle(self, direction):
-        corners = 0
+        corners = []
         position = np.array([[pos_x], [pos_y]])
         start_position = position
-        while corners < 4:
+        while len(corners) < 4:
             right_turn = direction + TURN_RIGHT @ direction
             if color_at(position + right_turn) == BLACK:
-                corners +=1
-                position += position
+                position += direction
+                corners.apend[position]
                 diretion = TURN_RIGHT @ direction
             elif color_at(positoin + direction) == BLACK:
                 position += direction
