@@ -30,7 +30,7 @@ def frame_loop():
         pygame.transform.scale(canvas, WINDOW_SIZE, dest_surface=screen)
 
         pygame.display.update()
-        clock.tick(30)
+        clock.tick(12)
 
 
 frame_loop()
