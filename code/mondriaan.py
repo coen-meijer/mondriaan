@@ -3,12 +3,42 @@ from enum import Enum
 import pygame
 import pygame.surface as surface
 import pygame.gfxdraw
+import numpy as np
 
-class Direction(Enum):
-    UP = 0
-    RIGHT = 1
-    DOWN = 2
-    LEFT = 3
+TURN_RIGHT = np.array([[ 0, 1], [-1, 0]])
+TURN_LEFT  = np.array([[ 0,-1], [ 1, 0]])
+
+UP    = np.array([[ 0], [-1]])
+DOWN  = np.array([[ 0], [ 1]])
+LEFT  = np.array([[-1], [0]])
+RIGHT = np.array([[ 1], [0]])
+
+#class Direction(Enum):
+#    UP = (0, -1)
+#    RIGHT = (1, 0)
+#    DOWN = (0, 1)
+#    LEFT = (-1, 0)
+
+#def clockwise(dir):
+#    if dir == Direction.UP:
+#        return Direction.RIGHT
+#    elif dir == Direcion.RIGHT:
+#        return Direction.DOWN
+#    elif dir == Direcion.DOWN:
+#        return Direcion.LEFT
+#    elif dir == Direction.LEFT:
+#        return Direction.UP
+#
+# def anti_clockwise(dir):
+#    if dir == Direction.UP:
+#        return Direction.LEFT
+#    elif dir == Direcion.RIGHT:
+#        return Direction.UP
+#    elif dir == Direcion.DOWN:
+#        return Direcion.RIGHT
+#    elif dir == Direction.LEFT:
+#        return Direction.DOWN
+
 
 #238
 RESOLUTION = (64, 64)
@@ -19,7 +49,6 @@ YELLOW = (238, 221, 0)
 BLUE = (0, 51, 153)
 RED = (204, 51, 0)
 # MAYBE MELLOW OUT THE COLORS A BIT LATER.
-
 
 
 class PofP:
@@ -34,7 +63,7 @@ class PofP:
         self.down_pressed = False
         self.left_pressed = False
         self.right_pressed = False
-#        self.direction =
+        self.direction = None
 
 
     def frame(self, input):
@@ -54,17 +83,51 @@ class PofP:
 
         if self.left_pressed:
             self.pos_x = (self.pos_x - 1) % RESOLUTION[0]
+            self.direction = Direcion.LEFT
         if self.right_pressed:
             self.pos_x = (self.pos_x + 1) % RESOLUTION[0]
+            self.direction = Direcion.RIGHT
         if self.up_pressed:
             self.pos_y = (self.pos_y - 1) % RESOLUTION[1]
+            self.direction = Direction.UP
         if self.down_pressed:
             self.pos_y = (self.pos_y + 1) % RESOLUTION[1]
+            self.direction = Direcion.DOWN
+
+        if pixel_at((self.pos_x, self.pos_y)) == BLACK:
+
 
         pygame.gfxdraw.pixel(self.canvas, self.pos_x, self.pos_y, BLACK)
 #        print("3", self.canvas)
         return self.canvas
         # should return a pygame surface with dimensions 64 x 64
 
-    def check_rectangle(self):
-        pass
+    def color_at(column_vector):
+        return self.canvas.get_at(column_vector[0, 0], column_vector[1, 0])
+
+    def check_rectangle(self, direction):
+        corners = 0
+        position = np.array([[pos_x], [pos_y]])
+        start_position = position
+        while corners < 4:
+            right_turn = direction + TURN_RIGHT @ direction
+            if color_at(position + right_turn) == BLACK:
+                corners +=1
+                position += position
+                diretion = TURN_RIGHT @ direction
+            elif color_at(positoin + direction) == BLACK:
+                position += direction
+            else:
+                return False
+        # corners == 4, check if the position is in the origional place
+        retrun position == start_position
+
+
+
+if __name__ == "__main__":
+    print("test")
+    print("when you go left and turn left you than go")
+    print(TURN_LEFT @ LEFT)
+
+
+
