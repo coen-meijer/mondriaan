@@ -1,7 +1,6 @@
 import pygame, sys
 
-#from code.pofp import PofP
-from code.mondriaan import PofP
+from code.mondriaan import Mondriaan
 
 import random
 import os
@@ -12,7 +11,7 @@ TITLE = "Mondriaan"
 pygame.init()
 screen = pygame.display.set_mode(WINDOW_SIZE)
 clock = pygame.time.Clock()
-my_game = PofP()
+my_game = Mondriaan()
 
 pygame.display.set_caption(TITLE)
 
